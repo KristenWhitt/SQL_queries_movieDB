@@ -1,0 +1,50 @@
+SQL query using subqueries to find how many of the top revenue generating customers are in each city.
+
+SELECT COUNT(DISTINCT F.customer_id) AS all_customer_count, 
+		COUNT(DISTINCT top_5_customers.country) AS top_customer_count,
+			I.country
+
+
+FROM customer F
+
+
+INNER JOIN address G ON F.address_id = G.address_id
+INNER JOIN city H ON G.city_id = H.city_id
+INNER JOIN country I ON H.country_id = I.country_id
+LEFT JOIN (SELECT
+SUM(A.amount) AS total_amt_paid,
+B.customer_id,
+B.first_name,
+B.last_name,
+D.city,
+E.country
+
+
+FROM payment A
+
+
+INNER JOIN customer B ON A.customer_id = B.customer_id
+INNER JOIN address C ON B.address_id = C.address_id
+INNER JOIN city D ON C.city_id = D.city_id
+INNER JOIN country E ON D.country_id = E.country_id
+
+
+GROUP BY B.customer_id, E.country, D.city
+HAVING city IN ('Aurora', 
+				   'Acua', 
+				   'Citrus Heights', 
+				   'Iwaki', 
+				   'Ambattur',
+				  'Shanwei',
+				  'So Leopoldo',
+				  'Teboksary',
+				  'Tianjin',
+				  'Cianjur')
+ORDER BY SUM(A.amount) DESC
+LIMIT 5) AS top_5_customers ON top_5_customers.country = I.country
+
+
+
+
+GROUP BY I.country
+ORDER BY COUNT(DISTINCT F.customer_id) DESC
