@@ -1,1 +1,39 @@
-Here is a SQL query using a CTE
+Using SQL CTE to obtain the average amount paid by for customers in top ten revenue generating cities.
+________________________________________________________________________________________________________________________________
+
+WITH top_five (total_amt_paid, customer_id, first_name, last_name, city, country) AS 
+(SELECT
+SUM(A.amount) AS total_amt_paid,
+B.customer_id,
+B.first_name,
+B.last_name,
+D.city,
+E.country
+
+
+FROM payment A
+
+
+INNER JOIN customer B ON A.customer_id = B.customer_id
+INNER JOIN address C ON B.address_id = C.address_id
+INNER JOIN city D ON C.city_id = D.city_id
+INNER JOIN country E ON D.country_id = E.country_id
+
+
+GROUP BY B.customer_id, E.country, D.city
+HAVING city IN ('Aurora', 
+				   'Acua', 
+				   'Citrus Heights', 
+				   'Iwaki', 
+				   'Ambattur',
+				  'Shanwei',
+				  'So Leopoldo',
+				  'Teboksary',
+				  'Tianjin',
+				  'Cianjur')
+ORDER BY SUM(A.amount) DESC
+LIMIT 5)
+
+
+SELECT AVG(total_amt_paid) AS average
+FROM top_five
