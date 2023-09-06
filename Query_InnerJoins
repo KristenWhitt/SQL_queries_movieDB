@@ -1,0 +1,25 @@
+Query to obtain revenue by title
+
+
+SELECT SUM(A.amount)AS rental_revenue, D.title AS movie_title
+FROM payment A
+
+INNER JOIN rental B ON A.rental_id = B.rental_id
+INNER JOIN inventory C ON B.inventory_id = C.inventory_id
+INNER JOIN film D ON C.film_id = D.film_id
+
+GROUP BY D.title
+ORDER BY SUM(A.amount) DESC
+____________________________________________________________________________________________
+
+Query to obtain rental duration by genre
+
+
+SELECT ROUND(AVG(A.rental_duration), 2) AS avg_rental_duration, C.name AS film_genre
+FROM film A
+
+INNER JOIN film_category B ON A.film_id = B.film_id
+INNER JOIN category C ON B.category_id = C.category_id
+
+GROUP BY C.name
+ORDER BY avg_rental_duration DESC
