@@ -1,5 +1,5 @@
 # SQL_queries_movieDB
-SQL queries from project analyzing video rental sales for 'Rockbuster'.
+SQL queries from project analyzing video rental sales for 'Rockbuster' a movie rental company looking into transitioning to online rentals.
 
 ## Objectives:
 ### Generate data to make suggestions for business strategy for online movie rentals. 
